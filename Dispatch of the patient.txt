@@ -1,0 +1,14 @@
+Dispatch of the patient in hospital
+
+Pre-Requiste
+1. Patient already join in hospital
+2. we know the patient details
+3. Treatment will be started
+
+Scenario
+
+1. Checks the patient condition
+2. Patient is recovered
+3. Pay the pending bill 
+4. Doctors give the advices for the patient
+5. Discharge the patient
