@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="d0c8aa21-f336-45b5-8bec-d07cf7617ac5" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="assignmentFlow" doc:id="e78f179e-e5cf-4b1f-a8e0-52f2900822d2" >
+		<http:listener doc:name="Listener" doc:id="af0dbefe-0bb4-4458-af1b-67ebfcf30506" config-ref="HTTP_Listener_config" path="/assignment"/>
+		<ee:transform doc:name="Transform Message" doc:id="c7f90fdb-ea29-4dd8-b557-bef925b83348" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+[
+ 	{
+ 		"id": "8fa8435c-fca4-4b42-9b5a-e81f9bd9aa16",
+ 		"username": "bob",
+ 		"email": "bob@mulesoft",
+ 		"connectionInfo": {
+ 			"IPAddress": "212.141.190.171",
+ 			"MACAddress": "2A-7A-6F-D3-64-54"
+ 		}
+ 	},{
+ 		"id": "f125a585-df12-404a-8c80-711d117dd353",
+ 		"username": "greg",
+ 		"email": "greg@mulesoft.com",
+ 		"connectionInfo": {
+ 			"IPAddress": "128.211.42.181",
+ 			"MACAddress": "8D-BD-C3-C4-D8-A4"
+ 		}
+ 	},{
+ 		"id": "6d4747ee-eb00-4e81-b7dc-2b01585e6d99",
+ 		"username": "anna",
+ 		"email": "anna@mulesoft.com",
+ 		"connectionInfo": {
+ 			"IPAddress": "40.125.118.175",
+ 			"MACAddress": "9E-05-9B-68-8E-80"
+ 		}
+ 	}
+ ]
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<set-payload value='payload' doc:name="Set Payload" doc:id="e063f30b-8e2c-4af0-abd7-85254f51a3bb" />
+	</flow>
+</mule>
