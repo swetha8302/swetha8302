@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:os="http://www.mulesoft.org/schema/mule/os"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="3b882c01-7762-4725-af1b-c3e2219d8d57" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="10734c4f-30b3-4810-a5ba-5002c1f61923" >
+		<db:my-sql-connection host="localhost" port="3306" user="root" password="N#@98wrft45" database="database" />
+	</db:config>
+	<flow name="employeesFlow" doc:id="156086d0-90bc-4669-83db-8ddd8a72b8c8" >
+		<http:listener doc:name="Listener" doc:id="9950b8eb-4a68-44cf-9e6a-3eec7a3d157a" config-ref="HTTP_Listener_config" path="/employee"/>
+		<logger level="INFO" doc:name="Logger" doc:id="d4b5441e-b859-4446-9cb5-52c1c0855c39" message="connectng to database..."/>
+		<db:select doc:name="Select" doc:id="82ad168d-2258-4a38-a0c8-763950d4fca9" config-ref="Database_Config">
+			<db:sql ><![CDATA[SELECT * FROM employee;]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="8c9d8062-97f0-4f59-a51a-70934c612297" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
