@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:batch="http://www.mulesoft.org/schema/mule/batch" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/batch http://www.mulesoft.org/schema/mule/batch/current/mule-batch.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="5949a627-c140-4e09-9c8a-b27aee4e041b" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="batchprocessingdemoFlow" doc:id="80ef985a-804a-4a4b-9675-6d78e7166f02" >
+		<http:listener doc:name="Listener" doc:id="31acc7c6-bd14-40e8-b268-ca0c778b71e6" config-ref="HTTP_Listener_config" path="/batchpath"/>
+		<logger level="INFO" doc:name="Logger" doc:id="7b648c3c-2093-4437-9834-6484781277e3" message=' logging information-------Batchjob starting here..Thepayload is"[payload]"'/>
+		<batch:job jobName="batchprocessingdemoBatch_Job" doc:id="e998e69a-2461-4270-81d4-18af61649098" >
+			<batch:process-records >
+				<batch:step name="Batch_Step" doc:id="77cbff17-d3af-4fa4-87c3-ee71ac736aee" >
+					<logger level="INFO" doc:name="Logger" doc:id="bb7c15ce-36eb-4c64-b190-724ec6e59456" message="processing the  Batchjob here"/>
+				</batch:step>
+			</batch:process-records>
+			<batch:on-complete >
+				<logger level="INFO" doc:name="Logger" doc:id="fe39ce3e-0a40-461a-99e9-7c9581ad160b" message="completing the batchjob"/>
+			</batch:on-complete>
+		</batch:job>
+	</flow>
+</mule>
