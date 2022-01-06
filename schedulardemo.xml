@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<file:config name="File_Config" doc:name="File Config" doc:id="0c4eb3c3-a19b-4375-a735-f124bea0ac7c" />
+	<flow name="schedulardemoFlow" doc:id="580bbaa0-037f-4e87-888f-5a14738679e6" >
+		<scheduler doc:name="Scheduler" doc:id="37e7ddfb-d543-455a-aef9-288719176440" >
+			<scheduling-strategy >
+				<cron expression="1/2 * * * * ?" />
+			</scheduling-strategy>
+		</scheduler>
+		<file:write doc:name="Write" doc:id="bf89faa9-9bc0-48c1-a723-893f074efed3" config-ref="File_Config" path="E:\mulesoft demos\hello.txt">
+			<file:content ><![CDATA[" Adding some content to file"]]></file:content>
+		</file:write>
+		<logger level="INFO" doc:name="Logger" doc:id="418171af-3f1c-4908-8965-6d3b4f0d3e0f" message='#[now()  as String {format:"dd-MM-YYYY  HH:mm:ss"} ++ "content is added"]'/>
+	</flow>
+</mule>
