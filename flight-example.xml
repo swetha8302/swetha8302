@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="f30025f0-80da-41f9-9be2-82a0bfb51af7" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="PostFlightFlow" doc:id="5f256c5e-8b1d-4f79-aadf-15ee5e785491" >
+		<http:listener doc:name="HTTP" doc:id="089450cb-5bea-4f59-86da-f2add01a4d30" config-ref="HTTP_Listener_config" path="/flights"/>
+		<ee:transform doc:name="Transform Message" doc:id="c81d0800-a7bd-4b11-9720-15b0da761c72" >
+			<ee:message >
+				<ee:set-payload resource="json_flight_playground.dwl" />
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="6eaab322-9727-4eea-afee-7d0cdb513833" />
+	</flow>
+</mule>
