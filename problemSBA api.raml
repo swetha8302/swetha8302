@@ -1,0 +1,87 @@
+#%RAML 1.0
+types:
+  Address:
+    example:
+      strict: true
+      value:
+        Street: Thota
+        City: Kadapa
+        postalCode: "516128"
+        state: AP
+        country: India
+    properties:
+      Street?:
+        example: Example
+        type: string
+      City?:
+        example: Example
+        type: string
+      postalCode?:
+        example: Example
+        type: string
+      state?:
+        example: Example
+        type: string
+      country?:
+        example: Example
+        type: string
+  Contact:
+    description: Contact data type
+    example:
+      strict: true
+      value:
+        firstName: Swetha
+        lastName: Thota
+        phone: "8340822802"
+        email: thota.swetha@dxc.com
+        deliveryAddress: Thota Street, kadapa, 516128, AP
+        postalAddress: Thota Street, kadapa, 516128, AP
+    properties:
+      firstName?:
+        example: Example
+        type: string
+      lastName:
+        example: Example
+        type: string
+      phone?:
+        example: Example
+        type: string
+      email?:
+        example: Example
+        type: string
+      deliveryAddress?:
+        example: Example
+        type: string
+      postalAddress?:
+        example: Example
+        type: string
+title: NTO Customer Database API
+baseUri: api.samplebaseuri.com
+description: A simple API to retrieve information from Northern Trail Outfitters customer database.
+mediaType:
+  - application/json
+version: 1.0.0
+protocols:
+  - HTTP
+  - HTTPS
+/customers:
+  get:
+    displayName: Get list of customers
+    responses:
+      "200":
+        body:
+          application/json:
+            items:
+              type: Contact
+/customers/{customerid}:
+  get:
+    displayName: Get customer by ID
+    responses:
+      "200":
+        body:
+          application/json:
+            type: Contact
+  uriParameters:
+    customerid:
+      example: Example
+      type: string
