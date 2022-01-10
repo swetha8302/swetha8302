@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="32dbe7c2-67c2-4a33-80d9-a7e02a8376f8" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<db:config name="Database_Config" doc:name="Database Config" doc:id="c726f703-8ad8-495e-8c11-016576002f3b" >
+		<db:my-sql-connection host="localhost" port="3306" user="root" password="N#@98wrft45" database="mydb" />
+	</db:config>
+	<flow name="smartrestaurantFlow" doc:id="ee6e69a3-71a1-4dad-9438-519919d7538e" >
+		<http:listener doc:name="customer" doc:id="0bdd92a1-dcca-4189-9a05-4bd1b1333d5a" config-ref="HTTP_Listener_config" path="/smart"/>
+		<logger level="INFO" doc:name="Menu items in touchpad" doc:id="80938d74-d6c1-42ed-ba05-1284e3737032" message="connecting to kitchen"/>
+		<db:select doc:name="Select" doc:id="3f9ce781-19b6-49d6-85f6-cf693418e2a6" config-ref="Database_Config">
+			<db:sql ><![CDATA[SELECT * FROM menuitems;]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="kitchen" doc:id="026542f7-2190-4588-aaf7-59c5d2d85556">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+"prepare food!"]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="smartrestaurantFlow1" doc:id="972f8ab0-1596-4d94-ae66-a710bd250020" >
+		<http:listener doc:name="kitchen" doc:id="db34a86b-4fe2-410e-84a1-a2bb1fc83621" config-ref="HTTP_Listener_config" path="/smart1"/>
+		<logger level="INFO" doc:name="Logger" doc:id="daebac7c-4163-4d19-8e28-4fa9020fce99" message="connecting to customer"/>
+		<ee:transform doc:name="Customer" doc:id="4f751330-36ba-495a-bc63-b232b37cb6a8">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+
+"food is ready!"]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
